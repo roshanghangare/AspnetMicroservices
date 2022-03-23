@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Discount.Grpc.Protos;
 using Discount.Grpc.Repositories;
 using Grpc.Core;
@@ -11,11 +12,13 @@ namespace Discount.Grpc.Services
 	{
 		readonly IDiscountRepository discountRepository;
 		readonly ILogger<DiscountService> logger;
+		readonly IMapper mapper;
 
-		public DiscountService(IDiscountRepository discountRepository, ILogger<DiscountService> logger)
+		public DiscountService(IDiscountRepository discountRepository, ILogger<DiscountService> logger, IMapper mapper)
 		{
 			this.discountRepository = discountRepository ?? throw new ArgumentNullException(nameof(discountRepository));
 			this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 		}
 
 		public override async Task<CouponModel> GetDiscount(GetDiscountRequest request, ServerCallContext context)

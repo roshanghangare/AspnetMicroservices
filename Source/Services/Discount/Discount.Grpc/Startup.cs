@@ -1,4 +1,5 @@
-﻿using Discount.Grpc.Repositories;
+﻿using AutoMapper;
+using Discount.Grpc.Repositories;
 using Discount.Grpc.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +16,7 @@ namespace Discount.Grpc
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddScoped<IDiscountRepository, DiscountRepository>();
+			services.AddAutoMapper(typeof(Startup));
 			services.AddGrpc();
 		}
 
