@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Discount.Grpc.Services;
+//using Discount.Grpc.Services;
 
 namespace Discount.Grpc
 {
@@ -30,7 +30,7 @@ namespace Discount.Grpc
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapGrpcService<GreeterService>();
+				//endpoints.MapGrpcService<GreeterService>();
 
 				endpoints.MapGet("/", async context =>
 					{
