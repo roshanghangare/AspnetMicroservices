@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ordering.Application
+﻿namespace Ordering.Application
 {
 	public class Class1
 	{

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ordering.Domain
+﻿namespace Ordering.Domain
 {
 	public class Class1
 	{
