@@ -6,17 +6,18 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using Ordering.Application.Contracts.Persistence;
 using Ordering.Application.Exceptions;
+using Ordering.Application.Features.Orders.Commands.UpdateOrder;
 using Ordering.Domain.Entities;
 
-namespace Ordering.Application.Features.Orders.Commands.UpdateOrder
+namespace Ordering.Application.Features.Orders.Commands.DeleteOrder
 {
-	public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand>
+	public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand>
 	{
 		readonly IOrderRepository orderRepository;
 		readonly IMapper mapper;
 		readonly ILogger<UpdateOrderCommandHandler> logger;
 
-		public UpdateOrderCommandHandler(IOrderRepository orderRepository, IMapper mapper,
+		public DeleteOrderCommandHandler(IOrderRepository orderRepository, IMapper mapper,
 			ILogger<UpdateOrderCommandHandler> logger)
 		{
 			this.orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
@@ -24,19 +25,17 @@ namespace Ordering.Application.Features.Orders.Commands.UpdateOrder
 			this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
-		public async Task<Unit> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
+		public async Task<Unit> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
 		{
-			var orderToUpdate = await orderRepository.GetByIdAsync(request.Id);
-			if (orderToUpdate == null)
+			var orderToDelete = await orderRepository.GetByIdAsync(request.Id);
+
+			if (orderToDelete == null)
 				throw new NotFoundException(nameof(Order), request.Id);
+			await orderRepository.DeleteAsync(orderToDelete);
 
-			mapper.Map(request, orderToUpdate, typeof(UpdateOrderCommand), typeof(Order));
+			logger.LogInformation($"Order {orderToDelete.Id} is successfully deleted.");
 
-			await orderRepository.UpdateAsync(orderToUpdate);
-
-			logger.LogInformation($"Order {orderToUpdate.Id} is successfully updated.");
-
-			return Unit.Value;;
+			return Unit.Value; ;
 		}
 	}
 }
